@@ -1,5 +1,5 @@
 from types import FunctionType
-from django.utils import simplejson
+import json
 from django.db import models
 from forms import GoogleMapsFormWidget
 from django.template import Context, loader
@@ -16,7 +16,7 @@ class GoogleMaps(object):
     frozen = None
 
     def __str__(self):
-        return simplejson.dumps(filter_object(self))
+        return json.dumps(filter_object(self))
  
 class GoogleMapsField(models.Field):
     ''' Google Maps Representation '''
@@ -39,7 +39,7 @@ class GoogleMapsField(models.Field):
 
         # Load in JSON data
         try:
-            mapdata = simplejson.loads(value)
+            mapdata = json.loads(value)
 
             # No data
             if len(mapdata.keys()) == 0:
@@ -69,7 +69,7 @@ class GoogleMapsField(models.Field):
     # Reverse of to_python
     def get_prep_value(self, obj):
         try:
-            return simplejson.dumps(filter_object(obj))
+            return json.dumps(filter_object(obj))
         except:
             return ""
 
@@ -84,7 +84,7 @@ class GoogleMapsField(models.Field):
     # Default unicode function
     def __unicode__(self):
         return ''
-        return simplejson.dumps(filter_object(obj))
+        return json.dumps(filter_object(obj))
 
 try:
     from south.modelsinspector import add_introspection_rules
